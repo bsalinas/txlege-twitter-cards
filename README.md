@@ -1,0 +1,1 @@
+This application will generate twitter cards that describe bills in the TX Legislature. When you visit the webpage, it will redirect you to the txlegis website.
