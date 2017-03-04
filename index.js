@@ -18,15 +18,22 @@ for(var idx in data)
         var components = link.split("billtext/html/")
         if(components.length > 0)
         {
-            var billNumber = components[1].substring(0,components[1].length-4)
+            var billNumber = components[1].substring(0,components[1].length-5)
             console.log(data[idx]);
+            var session = "";
+            var sessionComponents = link.split("tlodocs/");
+            if(sessionComponents.length > 0)
+            {
+                session = sessionComponents[1].split("/")[0];
+            }
 
             billsById[billNumber] = {
                 id:billNumber,
                 title:data[idx]['title'],
                 text:data[idx]['description'],
                 author:data[idx]['creator']['__text'],
-                link:data[idx]['guid']
+                link:data[idx]['guid'],
+                session:session
             }
             console.log(billsById[billNumber])
         }
@@ -36,13 +43,22 @@ for(var idx in data)
 app.get('/bill/:billId', function (req, res) {
   // res.send('Hello World! '+ billId)
   console.log(req.headers);
+
   var billId = req.params['billId'];
   if(typeof billsById[billId] != "undefined")
   {
     var bill = billsById[billId];
+    var userAgent = req.headers['user-agent']
+    if(userAgent.toLowerCase().includes('twitterbot'))
+    {
+        res.render('twitter', {bill:bill})  
+    }
+    else {
+        res.redirect('http://www.legis.state.tx.us/BillLookup/History.aspx?LegSess='+bill['session']+'&Bill='+bill["id"])
+    }
 
     // res.send(bill)
-    res.render('twitter', {bill:bill})
+    
 
   } else {
     res.send("No Bill with id:"+billId)
