@@ -8,6 +8,7 @@ var port = process.env.PORT || 3000;
 app.engine('handlebars', handlebars());
 app.set('view engine', 'handlebars');
 
+//Temporary in-memory storage of a small sample of data.
 var billsById = {}
 for(var idx in data)
 {
@@ -40,34 +41,31 @@ for(var idx in data)
     }
 }
 
-app.get('/bill/:billId', function (req, res) {
-  // res.send('Hello World! '+ billId)
-  console.log(req.headers);
+app.get('/session/:sessionId/bill/:billId', function (req, res) {
 
+  //Grab our parameters from the URL.
   var billId = req.params['billId'];
-  if(typeof billsById[billId] != "undefined")
+  var sessionId = req.params['sessionId'];
+
+  var userAgent = req.headers['user-agent']
+  if(userAgent.toLowerCase().includes('twitterbot'))
   {
-    var bill = billsById[billId];
-    var userAgent = req.headers['user-agent']
-    if(userAgent.toLowerCase().includes('twitterbot'))
+    //If it is twitter, we need to lookup the bill and make some metadata
+    if(typeof billsById[billId] != "undefined")
     {
-        res.render('twitter', {bill:bill})  
-    }
-    else {
-        res.redirect('http://www.legis.state.tx.us/BillLookup/History.aspx?LegSess='+bill['session']+'&Bill='+bill["id"])
-    }
-
-    // res.send(bill)
-    
-
-  } else {
-    res.send("No Bill with id:"+billId)
+      //This is where we'd make an API call
+      //Or a call to a database
+      var bill = billsById[billId];
+      res.render('twitter', {bill:bill})
+      return;
+    } 
   }
-
+  //If it isn't twitter knocking on the door, just redirect to the Legislature Website.
+  //The alternative would be to make a webpage dedicated to each bill, but who has time for that.
+  res.redirect('http://www.legis.state.tx.us/BillLookup/History.aspx?LegSess='+sessionId+'&Bill='+billId);
   
-})
+});
 
-app.listen(port, function () {
-  console.log('Example app listening on port '+port+'!')
-})
+//Start the app.
+app.listen(port);
 

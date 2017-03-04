@@ -1,1 +1,3 @@
 This application will generate twitter cards that describe bills in the TX Legislature. When you visit the webpage, it will redirect you to the txlegis website.
+
+The idea is that you could link to a URL (possibly when a bill is introduced, or maybe when at some point later in the bill's life), get a social media-friendly site with meta tags to make twitter cards, but then when you click on the link you get taken to the real website about the bill.
