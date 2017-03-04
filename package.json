@@ -4,15 +4,13 @@
   "description": "A simple server that generates twitter cards for the TX Legislature bills",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "scripts": {
     "start": "node index.js"
   },
+  "author": "",
   "license": "\tApache-2.0",
   "dependencies": {
     "express": "^4.15.0",
-    "express-handlebars": "^3.0.0"
+    "express-handlebars": "^3.0.0",
+    "mongodb": "^2.2.24"
   }
 }
