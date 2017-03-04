@@ -35,7 +35,7 @@ for(var idx in data)
 
 app.get('/bill/:billId', function (req, res) {
   // res.send('Hello World! '+ billId)
-
+  console.log(req.headers);
   var billId = req.params['billId'];
   if(typeof billsById[billId] != "undefined")
   {
