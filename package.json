@@ -1,5 +1,5 @@
 {
-  "name": "txlege-twitter-cards",
+  "name": "txlegegi-twitter-cards",
   "version": "0.1.0",
   "description": "A simple server that generates twitter cards for the TX Legislature bills",
   "main": "index.js",
@@ -7,6 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
+  "scripts": {
+    "start": "node index.js"
+  },
   "license": "\tApache-2.0",
   "dependencies": {
     "express": "^4.15.0",
