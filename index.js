@@ -7,7 +7,17 @@ var MongoClient = require('mongodb').MongoClient;
 var app = express()
 var port = process.env.PORT || 3000;
 
-app.engine('handlebars', handlebars());
+app.engine('handlebars', handlebars({
+  helpers:{
+    "party":function(text) {
+      console.log(text);
+  if(text.toUpperCase().startsWith('R')) return "Republican";
+  if(text.toUpperCase().startsWith('D')) return "Democrat";
+  if(text.toUpperCase().startsWith('I')) return "Independent";
+  if(text.toUpperCase().startsWith('L')) return "Libertarian";
+  return text;}
+  }
+}));
 app.set('view engine', 'handlebars');
 
 
@@ -27,6 +37,7 @@ MongoClient.connect(dbString, function (err, database) {
   db = database;
   // Start the application after the database connection is ready
   app.listen(port);
+  console.log("Launched");
 });
 
 
@@ -64,11 +75,10 @@ MongoClient.connect(dbString, function (err, database) {
 // }
 
 
-app.get('/session/:sessionId/bill/:billId', function (req, res) {
-
+app.get('/bill/:billId', function (req, res) {
   //Grab our parameters from the URL.
   var billId = req.params['billId'];
-  var sessionId = req.params['sessionId'];
+  // var sessionId = req.params['sessionId'];
   db.collection("bills").findOne({"bill.bill_number":billId, "bill.session.session_id":1429}, function(err, doc){
     // console.log(err);
     if(err){
