@@ -2,13 +2,15 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>{{bill.title}}</title>
+    <title>TX-{{bill.bill.bill_number}} by {{author.name}}</title>
 
     <meta name="twitter:card" content="summary">
+
     <meta name="twitter:title" content="{{bill.bill.bill_number}} by {{author.name}} ({{author.party}})">
     <meta name="twitter:description" content="{{bill.bill.description}}">
     {{#districtUrl}}
     <meta name="twitter:image" content="{{.}}">
+    <meta name="og:image" content="{{.}}">
     {{/districtUrl}}
     
     <!-- Latest compiled and minified CSS -->
