@@ -12,7 +12,8 @@ var port = process.env.PORT || 3000;
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
-})); 
+}));
+app.use(express.static('public'))
 
 app.engine('handlebars', handlebars({
   helpers:{
@@ -154,11 +155,19 @@ app.get('/bill/:billId', function (req, res) {
   //The alternative would be to make a webpage dedicated to each bill, but who has time for that.
   // res.redirect('http://www.legis.state.tx.us/BillLookup/History.aspx?LegSess='+sessionId+'&Bill='+billId);
 });
-  app.post("/search", function(req, res){
+
+  
+});
+app.post("/search", function(req, res){
     var billId = req.body['bill'];
     res.redirect('/bill/'+billId);
   });
-  
+app.get("/", function(req,res){
+  res.render("home");
+});
+
+app.get("/contact", function(req,res){
+  res.render("feedback")
 });
 
 
