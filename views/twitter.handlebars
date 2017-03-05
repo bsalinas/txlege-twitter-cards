@@ -7,8 +7,10 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="{{bill.bill.bill_number}} by {{author.name}}({{author.party}})">
     <meta name="twitter:description" content="{{bill.bill.description}}">
-    <!-- <meta name="twitter:image" content="http://www.senate.state.tx.us/members/d01/img/hughes-initial.jpg"> -->
-
+    {{#districtUrl}}
+    <meta name="twitter:image" content="{{.}}">
+    {{/districtUrl}}
+    
 
 </head>
 <body>
@@ -16,6 +18,9 @@
     <h1>{{bill.bill.bill_number}}</h1>
     <h2>Author: {{author.name}}({{author.party}}) with {{bill.bill.sponsors.length}} Sponsors</h2>
     <p>{{bill.bill.description}}
+    {{#districtUrl}}
+    <img src="{{.}}">
+    {{/districtUrl}}
 
 </body>
 </html>

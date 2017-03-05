@@ -87,7 +87,37 @@ app.get('/session/:sessionId/bill/:billId', function (req, res) {
         author = sponsor;
       }
     }
-    res.render('twitter', {bill:doc, author:author})
+    console.log(author);
+    var isSenate = false;
+    var districtNumber = false;
+    var rawDistrict = author.district;
+    console.log(rawDistrict);
+    if(typeof rawDistrict != "undefined")
+    {
+      if(rawDistrict.startsWith('S')){
+        isSenate = true;
+      }
+      else{
+        isSenate = false;
+      }
+      //SD-030
+      if(rawDistrict.length >= 3)
+      {
+        districtNumber = parseInt(rawDistrict.substring(3,rawDistrict.length));
+      }
+    }
+    var district = false;
+    var districtUrl = false;
+    if(typeof districtNumber != "undefined"){
+      district = {
+        isSenate:isSenate,
+        number:districtNumber
+      };
+      districtUrl = 'https://s3.amazonaws.com/congressional-maps/tx/'+(isSenate? "upper" : "lower")+'/district_'+districtNumber+'.png'
+    }
+    console.log("'"+districtUrl+"'");
+
+    res.render('twitter', {bill:doc, author:author, district:district, districtUrl:districtUrl})
   // var userAgent = req.headers['user-agent']
   // if(userAgent.toLowerCase().includes('twitterbot'))
   // {
