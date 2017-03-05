@@ -1,11 +1,18 @@
 var data = require('./sample.json');
 var express = require('express');
 var handlebars = require('express-handlebars')
+var bodyParser = require('body-parser')
 var MongoClient = require('mongodb').MongoClient;
 
 
 var app = express()
 var port = process.env.PORT || 3000;
+
+
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+})); 
 
 app.engine('handlebars', handlebars({
   helpers:{
@@ -78,6 +85,7 @@ MongoClient.connect(dbString, function (err, database) {
 app.get('/bill/:billId', function (req, res) {
   //Grab our parameters from the URL.
   var billId = req.params['billId'];
+  billId = billId.toUpperCase();
   // var sessionId = req.params['sessionId'];
   db.collection("bills").findOne({"bill.bill_number":billId, "bill.session.session_id":1429}, function(err, doc){
     // console.log(err);
@@ -87,7 +95,7 @@ app.get('/bill/:billId', function (req, res) {
     }
     console.log(doc);
     if(doc == null){
-      res.send("No bill");
+      res.render("error", {billId:billId});
       return;
     }
     var author = false;
@@ -146,6 +154,10 @@ app.get('/bill/:billId', function (req, res) {
   //The alternative would be to make a webpage dedicated to each bill, but who has time for that.
   // res.redirect('http://www.legis.state.tx.us/BillLookup/History.aspx?LegSess='+sessionId+'&Bill='+billId);
 });
+  app.post("/search", function(req, res){
+    var billId = req.body['bill'];
+    res.redirect('/bill/'+billId);
+  });
   
 });
 

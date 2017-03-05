@@ -9,6 +9,7 @@
   "author": "",
   "license": "\tApache-2.0",
   "dependencies": {
+    "body-parser": "^1.17.0",
     "express": "^4.15.0",
     "express-handlebars": "^3.0.0",
     "mongodb": "^2.2.24"
